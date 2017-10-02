@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recipe_cards_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.project2.bakingapplication.RecipeCardsActivity">
+
+  <!-- Recipe RecyclerView -->
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recipe_recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:scrollbars="vertical">
+
+  </android.support.v7.widget.RecyclerView>
+
+  <!-- No Recipe Text -->
+  <TextView
+      android:id="@+id/text_no_data_error"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textSize="16sp"
+      android:text="@string/error_no_recipe"
+      android:visibility="invisible"/>
+
+</LinearLayout>

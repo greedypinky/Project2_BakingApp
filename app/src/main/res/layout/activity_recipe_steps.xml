@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- need to specify the fragment class -->
+    <fragment
+        android:id="@+id/fragment_recipe_steps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.project2.bakingapplication.RecipeStepsFragment">
+
+
+    </fragment>
+
+    <!-- TODO: Create one more xml file that includes the right pane -->
+
+
+
+</LinearLayout>

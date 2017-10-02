@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    >
+
+    <LinearLayout
+        android:id="@+id/fragment_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_no_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/no_video"
+            android:padding="22dp"
+            android:visibility="invisible"
+           android:layout_gravity="center_vertical"/>
+
+        <!-- Recipe Video -->
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/recipe_step_video"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+
+            />
+
+        <!-- Step instructions: get from Step's description -->
+        <TextView
+            android:id="@+id/recipe_step_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:textSize="22sp"
+            android:padding="20dp"/>
+    </LinearLayout>
+
+    <!-- Buttons to go to previous step OR to the next step -->
+
+        <LinearLayout
+            android:id="@+id/buttons_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/fragment_recipe_detail"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|center"
+            android:padding="22sp">
+
+
+            <Button
+                android:id="@+id/button_previous"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:text="previous"
+                android:padding="8dp"
+                android:layout_gravity="center"/>
+
+
+            <Button
+                android:id="@+id/button_next"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:text="next"
+                android:padding="8dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+
+
+</RelativeLayout>
