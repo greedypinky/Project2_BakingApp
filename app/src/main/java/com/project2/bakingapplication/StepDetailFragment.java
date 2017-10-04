@@ -58,7 +58,7 @@ public class StepDetailFragment extends Fragment {
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
    // private SimpleExoPlayerView mPlayerView;
-    private static MediaSessionCompat mMediaSession;
+    //private static MediaSessionCompat mMediaSession;
 
 
 
@@ -84,37 +84,44 @@ public class StepDetailFragment extends Fragment {
         mStepVideoView = (SimpleExoPlayerView) fragmentRootView.findViewById(R.id.recipe_step_video);
         mStepInstructions = (TextView) fragmentRootView.findViewById(R.id.recipe_step_instructions);
         // initialize the buttons but in Tablet device, we do not have the buttons
-        mPreviousButton = fragmentRootView.findViewById(R.id.button_previous);
-        mNextButton = fragmentRootView.findViewById(R.id.button_next);
 
-        mPreviousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: load the previou step data
-                Step previousStep = onClickButtonHandler.onClickPrevious(mCurrentStep);
-                if(previousStep != null) {
-                    // TODO: check the step
-                    setStepData(previousStep);
-                } else {
+        View detail_land = (View)fragmentRootView.findViewById(R.id.fragment_recipe_detail_land);
 
-                    Toast.makeText(getContext(),"No more previous step!", Toast.LENGTH_LONG).show();
+        // In portrait mode - initialize the Previous and Next buttons
+        if(detail_land == null) {
+
+            mPreviousButton = fragmentRootView.findViewById(R.id.button_previous);
+            mNextButton = fragmentRootView.findViewById(R.id.button_next);
+
+            mPreviousButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO: load the previou step data
+                    Step previousStep = onClickButtonHandler.onClickPrevious(mCurrentStep);
+                    if (previousStep != null) {
+                        // TODO: check the step
+                        setStepData(previousStep);
+                    } else {
+
+                        Toast.makeText(getContext(), "No more previous step!", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
 
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: load the next step
-                Step nextStep = onClickButtonHandler.onClickNext(mCurrentStep);
-                if (nextStep != null) {
-                    setStepData(nextStep);
-                } else {
-                    Toast.makeText(getContext(),"No more Next step!", Toast.LENGTH_LONG).show();
+            mNextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO: load the next step
+                    Step nextStep = onClickButtonHandler.onClickNext(mCurrentStep);
+                    if (nextStep != null) {
+                        setStepData(nextStep);
+                    } else {
+                        Toast.makeText(getContext(), "No more Next step!", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
 
+        }
 
 
         return fragmentRootView;
@@ -251,9 +258,11 @@ public class StepDetailFragment extends Fragment {
      */
     private void releasePlayer() {
         //mNotificationManager.cancelAll();
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if(mExoPlayer!=null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
 

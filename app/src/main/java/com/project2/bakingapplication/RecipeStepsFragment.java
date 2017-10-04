@@ -30,6 +30,7 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
 
     private OnFragmentClickListener mOnFragmentClickListener;
 
+    // Adapter ViewHolder's call back method
     @Override
     public void onClickToOpenDetailView(Step step, int pos) {
         mOnFragmentClickListener.onClickFragment(step, pos);

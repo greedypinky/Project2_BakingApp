@@ -4,7 +4,7 @@
     android:id="@+id/ingredient_adapter_view"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.project2.bakingapplication.IngredientAdapter"
     >
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center">
+         >
         <TextView
             android:id="@+id/ingredient_text"
             android:layout_width="wrap_content"
@@ -27,10 +27,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:padding="8dp"
+            android:padding="16dp"
             android:gravity="center"/>
 
     </LinearLayout>
+    <!-- List divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#37474f"
+        />
 
 
 

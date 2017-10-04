@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipeStepsActivity">
+
+    <!-- need to specify the fragment class -->
+    <fragment
+        android:id="@+id/fragment_recipe_steps"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:name="com.project2.bakingapplication.RecipeStepsFragment">
+    </fragment>
+
+    <!-- TODO: Create one more xml file that includes the right pane -->
+    <!-- A small divider -->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+    <LinearLayout
+        android:id="@+id/tablet_recipe_detail"
+        android:layout_width="700dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+
+            <TextView
+                android:id="@+id/text_no_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+                android:text="@string/no_video"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:paddingTop="30dp"/>
+
+            <!-- Recipe Video -->
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/recipe_step_video"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                />
+
+            <!-- Step instructions: get from Step's description -->
+            <TextView
+                android:id="@+id/recipe_step_instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:padding="20dp"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

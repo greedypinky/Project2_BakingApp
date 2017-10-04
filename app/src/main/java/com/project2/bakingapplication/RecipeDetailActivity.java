@@ -29,11 +29,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        // Get fragment to set the required data
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mVideoStepFragment = (StepDetailFragment) fragmentManager.findFragmentById(R.id.fragment_steps_detail);
+
         // retrieve data from the savedInstanceState after rotation
         if(savedInstanceState!=null) {
             if(savedInstanceState.containsKey(CURRENT_STEP_KEY)) {
 
-                    mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
+                mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
+                mVideoStepFragment.setStepData(mCurrentStep);
+
             }
 
             if(savedInstanceState.containsKey(ALL_STEPS_KEY)) {
@@ -45,14 +51,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             // retrieve data from the intent
             Intent intent = getIntent();
             mCurrentStep = (Step) intent.getParcelableExtra("STEPS");
+            mVideoStepFragment.setStepData(mCurrentStep);
             mSteps = intent.getParcelableArrayListExtra("STEP_ARRAY");
         }
 
-        // Get fragment to set the required data
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mVideoStepFragment = (StepDetailFragment) fragmentManager.findFragmentById(R.id.fragment_steps_detail);
         mVideoStepFragment.setStepData(mCurrentStep);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -76,7 +79,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_STEP_KEY, mCurrentStep);
+        outState.putParcelableArrayList(ALL_STEPS_KEY, mSteps);
+
     }
 
     // Callback method to get the Previous step info

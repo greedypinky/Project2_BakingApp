@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class Recipe implements Parcelable {
 
-    private static String mId = null;
-    private static String mName = null;
-    private static List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
-    private static List<Step> mStepList = new ArrayList<Step>();
+    private String mId = null;
+    private String mName = null;
+    private List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
+    private List<Step> mStepList = new ArrayList<Step>();
 
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
