@@ -120,7 +120,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
         // int currentIndex = mSteps.indexOf(currentStep);
         Log.d(TAG,"onClickNext index:" + (currentIndex +1));
         // Next step is available
-        if(currentIndex >= 0 ) {
+        if(currentIndex >= 0 && currentIndex < mSteps.size()-1) {
             nextStep = mSteps.get(currentIndex + 1);
         }
 
