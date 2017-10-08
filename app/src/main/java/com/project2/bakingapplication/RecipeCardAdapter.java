@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project2.bakingapplication.utilities.Recipe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.squareup.picasso.Picasso;
 
 /**
  * RecipeCardAdapter
@@ -21,6 +23,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Ca
     private String TAG = RecipeCardAdapter.class.getSimpleName();
     private List<Recipe> mRecipeList = new ArrayList<Recipe>();
     private OnClickRecipeCardListener onClickRecipeCardListener;
+    private Context mContext;
 
     /**
      * Constructor
@@ -44,10 +47,10 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Ca
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType)  {
 
-        Context context = parent.getContext();
+        mContext = parent.getContext();
         boolean attachToRoot = false;
         // Inflate the layout of view holder
-        View view = LayoutInflater.from(context).inflate(R.layout.recipe_card, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.recipe_card, parent, false);
         return new CardViewHolder(view);
 
     }
@@ -61,6 +64,16 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Ca
         Log.d(TAG,"onBindViewHolder's recipeid:" + selectedRecipe.getId());
 
         holder.recipeName.setText(recipeName);
+        if(!selectedRecipe.getImage().isEmpty()) {
+        // Picasso will handle loading the images on a background thread, image decompression and caching the images.
+           Picasso.with(mContext).load(selectedRecipe.getImage()).into(holder.recipeImageView);
+
+        }
+//        String moviePosterURL = posterBaseURL + movieItem.getPosterPath();
+//        Log.d(TAG,"Load image from poster URL : " + moviePosterURL);
+//        // Picasso will handle loading the images on a background thread, image decompression and caching the images.
+//        Picasso.with(getContext()).load(moviePosterURL).into(posterImageView);
+
     }
 
     @Override
@@ -79,11 +92,14 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Ca
     public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CardView recipeCardView;
         private TextView recipeName;
+        private ImageView recipeImageView;
         public CardViewHolder(View itemView) {
             super(itemView);
             recipeCardView = (CardView)itemView.findViewById(R.id.recipe_card_view);
             recipeCardView.setOnClickListener(this);
             recipeName = (TextView)itemView.findViewById(R.id.recipe_name);
+            // TODO: add back imageView
+            recipeImageView = (ImageView) itemView.findViewById(R.id.recipe_image);
 
         }
 

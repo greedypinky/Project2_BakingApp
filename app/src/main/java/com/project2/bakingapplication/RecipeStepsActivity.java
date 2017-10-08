@@ -40,7 +40,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     private RecyclerView mIngredientRecycler;
     private RecyclerView mRecipeStepsDescRecycler;
     private Recipe mRecipe;
-    private static final String  RECIPE_KEY = "recipe";
+    public static final String RECIPE_KEY = "recipe";
+    public static final String WIDGET_RECIPE_KEY = "widget_recipe";
     // add the boolean to detect if it is a tablet device
     boolean mTwoPane = false;
     private RecipeStepsFragment mRecipeStepsFragment;
@@ -65,15 +66,21 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             }
 
         } else {
-            // fragment will be injected to this Activity
+            // get the recipe object passed by Intent's Extra
             Intent intent = getIntent();
-            //TODO : Fix this later, lets use some dummy data
-            // selected Recipe
-            mRecipe = intent.getParcelableExtra("RECIPE");
+            // recipe selected from the card view activity
+            if (intent.hasExtra(RecipeStepsActivity.RECIPE_KEY)) {
+                mRecipe = intent.getParcelableExtra(RecipeStepsActivity.RECIPE_KEY);
+            }
+            // recipe selected from the widget's grid view
+            if (intent.hasExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY)) {
+                mRecipe = intent.getParcelableExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY);
+            }
         }
 
         // Determine if you're creating a two-pane or single-pane display
-        if(findViewById(R.id.tablet_recipe_detail) != null) {
+        // Two-pane view : with detail view on the right
+        if (findViewById(R.id.tablet_recipe_detail) != null) {
             Log.d(TAG,"Tablet detail view is found!");
             // This recipe detail will only initially exist in the two-pane tablet case
             mTwoPane = true;
@@ -87,8 +94,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
 
         } else {
-            // from intent get back the recipe ID
-            // TODO: say we can get the Recipe ID and then how do we pass it into the fragment
+            // one-pane view: without detail view on the right
             mRecipeStepsFragment = (RecipeStepsFragment) fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
         }
 

@@ -7,12 +7,15 @@
     <string name="ingredients_measure">Measure:</string>
     <string name="ingredients_ingredient">Ingredient:</string>
     <string name="load_json_error">Error when loading recipe information!</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Baking Apps</string>
     <string name="add_widget">Add widget</string>
     <string name="ingredients_label">Ingredients</string>
     <string name="steps_label">Steps</string>
     <string name="error_no_recipe">No Recipe Data!</string>
     <string name="parcelable_recipe">RECIPE</string>
     <string name="no_video">No video for this step!</string>
+    <string name="no_recipe">No Recipe</string>
+    <string name="no_ingredient_data">Some error happens! No ingredient data!</string>
+    <string name="no_step_data">Some error happens! No steps data!</string>
 
 </resources>

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.project2.bakingapplication">
 
+    <!-- need to add permission to internet to watch the video -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,6 +15,7 @@
         <activity android:name=".RecipeCardsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -21,6 +23,7 @@
         <activity android:name=".RecipeDetailActivity" />
         <activity android:name=".StepVideoActivity" />
 
+        <!-- boardcast receiver -->
         <receiver android:name=".utilities.BakingAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -30,6 +33,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/baking_app_widget_info" />
         </receiver>
+
+        <!-- need to add permission allow system to bind the service to create the view -->
+        <service
+            android:name=".RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false">
+
+        </service>
+
     </application>
 
 </manifest>

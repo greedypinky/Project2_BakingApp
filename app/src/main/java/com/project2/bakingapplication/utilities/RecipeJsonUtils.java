@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.project2.bakingapplication.R;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,10 +60,11 @@ public class RecipeJsonUtils {
         return messages;
     } */
 
-    public static ArrayList<Recipe> readRecipeArray(Context context) throws IOException {
+    public static ArrayList<Recipe> readRecipeArray(Context context, String recipeJSON) throws IOException {
         recipeList = new ArrayList<Recipe>();
 
-        JsonReader reader = readJSONFile(context);
+        // JsonReader reader = readJSONFile(context);
+        JsonReader reader = readJSONFromString(recipeJSON);
         try {
             reader.beginArray();
             while (reader.hasNext()) {
@@ -285,6 +287,27 @@ public class RecipeJsonUtils {
 
         return reader;
 
+    }
+
+    /**
+     * readJSONFromString
+     * @param jsonStr
+     * @return
+     */
+    private static JsonReader readJSONFromString(String jsonStr) {
+        InputStream is = null;
+        JsonReader reader = null;
+        try {
+
+            is = new ByteArrayInputStream(jsonStr.getBytes("UTF-8"));
+            reader = new JsonReader(new InputStreamReader(is,"UTF-8"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,"Unable to get JsonReader :" + e.getMessage());
+        }
+
+        return reader;
     }
 
 

@@ -21,12 +21,15 @@ import com.project2.bakingapplication.utilities.Step;
 public class RecipeStepsFragment extends Fragment implements StepDescriptionAdapter.OnClickStepHandler{
 
     private String TAG = RecipeStepsFragment.class.getSimpleName();
+    private TextView mRecipeTitle;
     private RecyclerView mIngredientRecyclerView;
     private RecyclerView mStepsRecyclerView;
     private StepDescriptionAdapter mStepDescAdapter;
     private IngredientAdapter mIngredientAdapter;
     private Recipe mRecipe = null;
     private StepDescriptionAdapter.OnClickStepHandler mOnClickStepHandler = null;
+    private TextView mNoIngredientData;
+    private TextView mNoStepData;
 
     private OnFragmentClickListener mOnFragmentClickListener;
 
@@ -52,6 +55,9 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
         Log.d(TAG, "onCreateView");
         // inflate the fragment
         View fragmentRootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
+        mNoIngredientData = (TextView) fragmentRootView.findViewById(R.id.ingredient_no_data);
+        mNoStepData = (TextView) fragmentRootView.findViewById(R.id.steps_no_data);
+        mRecipeTitle = (TextView) fragmentRootView.findViewById(R.id.recipe_title);
         mIngredientRecyclerView = (RecyclerView) fragmentRootView.findViewById(R.id.recipe_ingredient_recycler_view);
         mStepsRecyclerView = (RecyclerView) fragmentRootView.findViewById(R.id.recipe_steps_recycler_view);
 
@@ -74,10 +80,13 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
             Log.d(TAG, "Set Recipe Ingredient and step data into adapter class");
             mIngredientAdapter.setAdapterData(mRecipe.getIngredientList());
             mStepDescAdapter.setSteps(mRecipe.getStepList());
-
         } else {
-            Log.d(TAG,"NO recipe data yet!");
-            // TODO: show the place holder message for empty list
+            Log.d(TAG,"No recipe data yet!");
+            // Show error text when no recipe data
+//            mNoIngredientData.setVisibility(View.VISIBLE);
+//            mNoStepData.setVisibility(View.VISIBLE);
+//            mIngredientRecyclerView.setVisibility(View.INVISIBLE);
+//            mStepsRecyclerView.setVisibility(View.INVISIBLE);
         }
 
         // return the fragment we just initialized!
@@ -115,6 +124,8 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
         if(mIngredientAdapter!=null) {
             mIngredientAdapter.setAdapterData(recipe.getIngredientList());
         }
+        // set the title
+        mRecipeTitle.setText(mRecipe.getName());
 
     }
 }

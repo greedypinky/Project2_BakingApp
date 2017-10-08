@@ -25,4 +25,11 @@
       android:text="@string/error_no_recipe"
       android:visibility="invisible"/>
 
+  <ProgressBar
+      android:id="@+id/loading_indicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:visibility="invisible"/>
+
 </LinearLayout>
