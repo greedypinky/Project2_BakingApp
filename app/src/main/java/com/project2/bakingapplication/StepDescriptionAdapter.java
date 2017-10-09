@@ -83,17 +83,6 @@ public class StepDescriptionAdapter extends RecyclerView.Adapter<StepDescription
             //Log.d(TAG, "onClick selectedTrailer position: " + selectedTrailer);
         }
 
-       // TODO: should put this somewhere, not inside the adapter class
-//        public Step getNextStep(){
-//            int nextStepIndex = mCurrentStep + 1;
-//            if( nextStepIndex < stepList.size()) {
-//
-//                return stepList.get(nextStepIndex);
-//            } else {
-//                // out of bound!!
-//                return null;
-//            }
-//        }
     }
 
     /**

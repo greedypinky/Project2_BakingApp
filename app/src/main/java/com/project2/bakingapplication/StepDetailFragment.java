@@ -57,15 +57,12 @@ public class StepDetailFragment extends Fragment {
     private Button mNextButton;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
-   // private SimpleExoPlayerView mPlayerView;
-    //private static MediaSessionCompat mMediaSession;
 
 
-
+   // Callback interface
     public interface OnClickButtonHandler {
-        // TODO: Update argument type and name
-        Step onClickPrevious(Step previousStep);
-        Step onClickNext(Step nextStep);
+        public Step onClickPrevious(Step previousStep);
+        public Step onClickNext(Step nextStep);
     }
 
 
@@ -96,10 +93,10 @@ public class StepDetailFragment extends Fragment {
             mPreviousButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: load the previou step data
+                    // load the previous step data by calling callback
                     Step previousStep = onClickButtonHandler.onClickPrevious(mCurrentStep);
                     if (previousStep != null) {
-                        // TODO: check the step
+                        // set the step
                         setStepData(previousStep);
                     } else {
 
@@ -111,7 +108,7 @@ public class StepDetailFragment extends Fragment {
             mNextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: load the next step
+                    // load the next step by calling callback
                     Step nextStep = onClickButtonHandler.onClickNext(mCurrentStep);
                     if (nextStep != null) {
                         setStepData(nextStep);
@@ -177,19 +174,10 @@ public class StepDetailFragment extends Fragment {
 
     }
 
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // TODO set OnClickListener for the Previous and Next button
+        // set OnClickListener for the Previous and Next button
         if (context instanceof StepDetailFragment.OnClickButtonHandler) {
             onClickButtonHandler = (OnClickButtonHandler) context;
         } else {
@@ -197,13 +185,6 @@ public class StepDetailFragment extends Fragment {
             throw new RuntimeException(context.toString()
                    + " must implement OnClickButtonHandler");
         }
-
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override

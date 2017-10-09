@@ -98,7 +98,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Ca
             recipeCardView = (CardView)itemView.findViewById(R.id.recipe_card_view);
             recipeCardView.setOnClickListener(this);
             recipeName = (TextView)itemView.findViewById(R.id.recipe_name);
-            // TODO: add back imageView
+            // imageView
             recipeImageView = (ImageView) itemView.findViewById(R.id.recipe_image);
 
         }

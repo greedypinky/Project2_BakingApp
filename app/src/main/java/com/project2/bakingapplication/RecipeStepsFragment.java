@@ -115,7 +115,7 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
 
     // Activity set the recipe information to fragment so that fragment can display the information
     public void setRecipe(Recipe recipe) {
-        // TODO: add recipe to the fragment
+        // add recipe to the fragment
         mRecipe = recipe;
         if (mStepDescAdapter!=null) {
             mStepDescAdapter.setSteps(recipe.getStepList());

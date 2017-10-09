@@ -1,6 +1,9 @@
 package com.project2.bakingapplication;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -14,7 +17,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.support.test.espresso.IdlingResource;
 
+import com.project2.bakingapplication.IdlingResource.ActivityIdlingResource;
 import com.project2.bakingapplication.utilities.NetworkUtils;
 import com.project2.bakingapplication.utilities.Recipe;
 import com.project2.bakingapplication.utilities.RecipeJsonUtils;
@@ -41,6 +46,22 @@ public class RecipeCardsActivity extends AppCompatActivity implements RecipeCard
     private String mRecipeJSON = null;
     private ProgressBar mLoadingIndicator = null;
     private String RECIPE_KEY = "recipe_key";
+
+
+    // add for testing
+    @Nullable
+    private ActivityIdlingResource mIdlingResource;
+
+
+    // add for testing
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new ActivityIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +97,9 @@ public class RecipeCardsActivity extends AppCompatActivity implements RecipeCard
         }
 
         mAdapter.setAdapterData(mRecipes);
+
+        // Get the IdlingResource instance
+        getIdlingResource();
     }
 
 
@@ -165,6 +189,11 @@ public class RecipeCardsActivity extends AppCompatActivity implements RecipeCard
                 // if data is returned, update Adapter's data
                 Log.d(TAG,"Set recipe data to adapter" );
                 mAdapter.setAdapterData(mRecipes);
+
+            }
+            // get back data from asynctask - set Idle state to true
+            if (mIdlingResource != null) {
+                mIdlingResource.setIdleState(true);
             }
         }
 

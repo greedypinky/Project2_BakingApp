@@ -153,8 +153,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     public void onClickFragment(Step step, int pos) {
 
         if(!mTwoPane) {
-            //Toast.makeText(this,"Fragment is Clicked",Toast.LENGTH_LONG).show();
-            // TODO: start activity if in Portrait view
+
+            // start activity if in Portrait view
             Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
             intent.putExtra("STEPS", step);
             intent.putParcelableArrayListExtra("STEP_ARRAY", (ArrayList) mRecipe.getStepList());

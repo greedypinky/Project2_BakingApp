@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     tools:context="com.project2.bakingapplication.StepDescriptionAdapter">
 
-    <!-- TODO: set the Recipe's step's short description -->
+    <!--  Recipe's step's short description -->
     <TextView
         android:id="@+id/step_desc_text"
         android:layout_width="match_parent"
