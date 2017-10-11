@@ -14,7 +14,8 @@
             android:text="@string/no_recipe"
             android:textColor="#ffffff"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
         <!-- if there is image view we can set the image -->
     <!--
         <ImageView

@@ -14,7 +14,7 @@ public class Step implements Parcelable
     private String mShortDesc;
     private String mDescription;
     private String mVideoURL;
-    private String mThumbNailURL;
+    private String mThumbNailURL; // ThumbNailURL is the image URL of the recipe
 
     /**
      * Constructor
@@ -77,6 +77,7 @@ public class Step implements Parcelable
     }
 
     /**
+     * This is actually the resource of the recipe image
      * getThumbNailURL
      * @return thumbnail URL
      */

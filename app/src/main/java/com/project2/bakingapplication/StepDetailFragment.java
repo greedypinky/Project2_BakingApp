@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -18,6 +21,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
 // exoplayer classes
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -37,6 +41,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import com.project2.bakingapplication.utilities.Step;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +52,11 @@ import com.project2.bakingapplication.utilities.Step;
 public class StepDetailFragment extends Fragment {
 
     private static String TAG = StepDetailFragment.class.getSimpleName();
+    private static String VIDEO_POSITION_KEY = "video_position";
+    private static String CURRENT_STEP_KEY = "current_step";
+    private static String CURRENT_WINDOW_POSITION_KEY = "current_window_position";
     private OnClickButtonHandler onClickButtonHandler;
+    private ImageView mThumbNailImage;
     private TextView mTextNoVideo;
     private TextView mStepInstructions;
     private Uri mVideoURI;
@@ -57,6 +66,9 @@ public class StepDetailFragment extends Fragment {
     private Button mNextButton;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
+    private boolean isVideoPlaying;
+    private long mVideoPosition = -1;
+    private int mCurrentwindowIndex = -1;
 
 
    // Callback interface
@@ -75,18 +87,44 @@ public class StepDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d(TAG,"Fragment - onCreateView");
+
+        // reset position for exoPlayer's window index and position
+        resetPosition();
+
         View fragmentRootView = inflater.inflate(R.layout.fragment_video_step,container,false);
         mTextNoVideo = (TextView) fragmentRootView.findViewById(R.id.text_no_video);
         // Initialize the exoplayer view.
         mStepVideoView = (SimpleExoPlayerView) fragmentRootView.findViewById(R.id.recipe_step_video);
         mStepInstructions = (TextView) fragmentRootView.findViewById(R.id.recipe_step_instructions);
+        mThumbNailImage = (ImageView) fragmentRootView.findViewById(R.id.recipe_thumbNailImage);
+        if ( mThumbNailImage == null ) {
+            Log.d(TAG, "onCreate() -> mThumbNailImage is NULL !!! why ? !!");
+        }
+
+        if ( mTextNoVideo == null ) {
+            Log.d(TAG, "onCreate() -> mThumbNailImage is NULL !!! why ? !!");
+        }
         // initialize the buttons but in Tablet device, we do not have the buttons
 
         View detail_land = (View)fragmentRootView.findViewById(R.id.fragment_recipe_detail_land);
 
+        // TODO: Restore the saved instance state
+        if (savedInstanceState!=null) {
+           if (savedInstanceState.containsKey(CURRENT_STEP_KEY)) {
+               mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
+           }
+           if(savedInstanceState.containsKey(VIDEO_POSITION_KEY)) {
+               mVideoPosition = savedInstanceState.getLong(VIDEO_POSITION_KEY);
+           }
+           if(savedInstanceState.containsKey(CURRENT_WINDOW_POSITION_KEY)) {
+               mCurrentwindowIndex = savedInstanceState.getInt(CURRENT_WINDOW_POSITION_KEY);
+           }
+        }
+
         // In portrait mode - initialize the Previous and Next buttons
         if(detail_land == null) {
-
+            Log.d(TAG,"Portrait mode!");
             mPreviousButton = fragmentRootView.findViewById(R.id.button_previous);
             mNextButton = fragmentRootView.findViewById(R.id.button_next);
 
@@ -120,7 +158,6 @@ public class StepDetailFragment extends Fragment {
 
         }
 
-
         return fragmentRootView;
     }
 
@@ -144,6 +181,7 @@ public class StepDetailFragment extends Fragment {
             mStepVideoView.setVisibility(View.VISIBLE);
 
             // Initialize the player.
+            Log.d(TAG, "Initialize the video");
             initializePlayer(mVideoURI);
 
         } else {
@@ -152,6 +190,29 @@ public class StepDetailFragment extends Fragment {
             mStepVideoView.setVisibility(View.INVISIBLE);
         }
 
+        // add back to deal with Thumbnail URL
+        Log.d(TAG, "Set Step's Thumbnail URL");
+        setImage(step);
+    }
+
+    /**
+     * setImage
+     * @param step
+     */
+    public void setImage(Step step) {
+
+        // TODO: add back the handle to display thumbnail image
+        String thumbNailURLUrl= step.getThumbNailURL();
+        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty()) {
+            Uri imageUri = Uri.parse(thumbNailURLUrl);
+            Picasso.with(getContext()).load(imageUri).into(mThumbNailImage);
+            mThumbNailImage.setVisibility(View.VISIBLE);
+        } else {
+            if ( mThumbNailImage == null ) {
+                Log.d(TAG, "mThumbNailImage is NULL !!! why ? !!");
+            }
+            // mThumbNailImage.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -201,7 +262,46 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy - release Player");
         releasePlayer();
+
+    }
+
+    /**
+     * Resubmit changes
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        releasePlayer();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart - initializePlayer");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Save the state of the player and release the resources
+        if(mExoPlayer != null){
+            //mExoPlayer.getContentPosition();
+            Log.d(TAG, "onPause - save the video position and window index");
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+            mCurrentwindowIndex = mExoPlayer.getCurrentWindowIndex();
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // resume the video
+        Log.d(TAG, "onResume - initialize the player");
+        String videoURL = mCurrentStep.getVideoURL();
+        initializePlayer(Uri.parse(videoURL));
 
     }
 
@@ -220,18 +320,41 @@ public class StepDetailFragment extends Fragment {
             // Prepare the MediaSource the very first time after ExoPlayer is initialized
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
+
+
+            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+            if (haveResumePosition) {
+                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+            }
+            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+
+            // if video position is saved
+//            if (mVideoPosition != C.POSITION_UNSET) {
+//                Log.d(TAG,"initialize player - set video position:" + String.valueOf(mVideoPosition));
+//                mExoPlayer.seekTo(mVideoPosition);
+//            }
+//            if (mCurrentwindowIndex != C.INDEX_UNSET) {
+//                Log.d(TAG,"initialize player - set window position:" + String.valueOf(mCurrentwindowIndex));
+//               // mExoPlayer.seekToDefaultPosition(mCurrentwindowIndex);
+//                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+//            }
+
             mExoPlayer.setPlayWhenReady(true);
 
         } else {
             // Prepare the MediaSource after Exoplayer is already initialized
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
 
+            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+            if (haveResumePosition) {
+                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+            }
+            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+            mExoPlayer.setPlayWhenReady(true);
         }
     }
+
 
 
     /**
@@ -246,6 +369,21 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Reset Video Position
+     */
+    private void resetPosition() {
+        mCurrentwindowIndex = C.INDEX_UNSET;
+        mVideoPosition = C.TIME_UNSET;
+    }
 
 
+    //TODO: Need to save the state of the video and the current step
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_STEP_KEY, mCurrentStep);
+        outState.putLong(VIDEO_POSITION_KEY, mVideoPosition);
+        outState.putInt(CURRENT_WINDOW_POSITION_KEY, mCurrentwindowIndex);
+    }
 }

@@ -40,7 +40,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         // get the data based on the position
         Ingredient ingredient = mIngredientsList.get(position);
         String nameOfIngredient = ingredient.getIngredient();
-        String quantity = ingredient.getQuatity();
+        String quantity = ingredient.getQuantity();
         String measure = ingredient.getMeasure();
         String quantity_measure = quantity + " " + measure;
 

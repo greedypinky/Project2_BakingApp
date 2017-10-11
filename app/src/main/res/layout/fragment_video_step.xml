@@ -17,6 +17,14 @@
         android:paddingRight="8dp"
         android:paddingBottom="8dp">
 
+        <!-- if there is recipe image, we display it -->
+        <ImageView
+            android:id="@+id/recipe_thumbNailImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:contentDescription="recipe"/>
+
         <TextView
             android:id="@+id/text_no_video"
             android:layout_width="match_parent"
@@ -26,14 +34,6 @@
             android:visibility="invisible"
             android:layout_marginTop="40dp"
             android:gravity="center"/>
-
-        <!-- if there is recipe image, we display it -->
-        <ImageView
-            android:contentDescription="recipe"
-            android:id="@+id/image_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
 
         <!-- Recipe Video -->
 

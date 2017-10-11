@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.project2.bakingapplication.utilities.Step;
 
@@ -26,20 +29,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG,"onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
         // Get fragment to set the required data
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Log.d(TAG,"findFragmentById - start ");
         mVideoStepFragment = (StepDetailFragment) fragmentManager.findFragmentById(R.id.fragment_steps_detail);
+        Log.d(TAG,"findFragmentById - end ");
 
         // retrieve data from the savedInstanceState after rotation
         if(savedInstanceState!=null) {
             if(savedInstanceState.containsKey(CURRENT_STEP_KEY)) {
-
+                Log.d(TAG,"savedInstanceState - get the current step object");
                 mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
-                mVideoStepFragment.setStepData(mCurrentStep);
-
+                //mVideoStepFragment.setStepData(mCurrentStep);
             }
 
             if(savedInstanceState.containsKey(ALL_STEPS_KEY)) {
@@ -50,13 +56,33 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
         } else {
             // retrieve data from the intent
             Intent intent = getIntent();
-            mCurrentStep = (Step) intent.getParcelableExtra("STEPS");
-            mVideoStepFragment.setStepData(mCurrentStep);
-            mSteps = intent.getParcelableArrayListExtra("STEP_ARRAY");
+            // Add this check to avoid exception
+            if(intent != null && intent.getExtras() != null) {
+                mCurrentStep = (Step) intent.getParcelableExtra("STEPS");
+                //mVideoStepFragment.setStepData(mCurrentStep);
+                mSteps = intent.getParcelableArrayListExtra("STEP_ARRAY");
+            }
         }
 
-        mVideoStepFragment.setStepData(mCurrentStep);
 
+            // TODO: need to set the video play into the full mode screen
+            //this.requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove title bar
+            //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            //        WindowManager.LayoutParams.FLAG_FULLSCREEN); //Remove notification bar
+//           getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
+//           getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                   WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+//        View detail_land = (View) mVideoStepFragment.getView().findViewById(R.id.fragment_recipe_detail_land);
+//        if (detail_land != null) {
+//            this.requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove title bar
+//            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                   WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        }
+
+        Log.d(TAG,"onCreate() - set step data to fragment");
+        mVideoStepFragment.setStepData(mCurrentStep);
+        //mVideoStepFragment.setImage(mCurrentStep);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

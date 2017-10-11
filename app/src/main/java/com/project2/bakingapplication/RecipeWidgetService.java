@@ -6,16 +6,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.project2.bakingapplication.utilities.BakingAppWidget;
+import com.project2.bakingapplication.utilities.Ingredient;
 import com.project2.bakingapplication.utilities.NetworkUtils;
 import com.project2.bakingapplication.utilities.Recipe;
 import com.project2.bakingapplication.utilities.RecipeJsonUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -29,6 +32,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
 
     public RecipeWidgetService() {
+
         super();
     }
 
@@ -61,7 +65,7 @@ class RecipeRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     // called on start and when notifyAppWidgetViewDataChanged is called
     @Override
     public void onDataSetChanged() {
-        Log.e("RecipeRemoteViewFactory", "onDataSetChanged()");
+        Log.d("RecipeRemoteViewFactory", "onDataSetChanged()");
         URL recipeURL = NetworkUtils.getRecipeURL();
         try {
 
@@ -98,35 +102,69 @@ class RecipeRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
      * @param position The current position of the item in the GridView to be displayed
      * @return The RemoteViews object to display for the provided postion
      */
+ //   @Override
+//    public RemoteViews getViewAt(int position) {
+//        // TODO: can display the recipe name on the GRID view
+//        Recipe selectedRecipe;
+//        if (mRecipes!=null && mRecipes.size() > 0) {
+//
+//            selectedRecipe =  mRecipes.get(position);
+//            // Create the view layout for the GridView
+//            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_recipe_layout);
+//            remoteViews .setTextViewText(R.id.widget_recipe_text, selectedRecipe.getName());
+//
+//            // Set List of Ingredient into the Widget ListView
+//            String name = selectedRecipe.getName();
+//            selectedRecipe.getIngredientList();
+//            List<Ingredient> ingredients = selectedRecipe.getIngredientList();
+//
+//            if (!selectedRecipe.getImage().isEmpty()) {
+//                //Uri imageUri = Uri.parse(selectedRecipe.getImage());
+//                //views.setImageViewUri(R.id.widget_recipe_image, imageUri);
+//            } else {
+//
+//                // TODO: we can add a place holder bitmap image
+//            }
+//
+//
+//            Intent fillInIntent = new Intent();
+//            fillInIntent.putExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY, selectedRecipe);
+//            remoteViews.setOnClickFillInIntent(R.id.widget_recipe_root, fillInIntent);
+//            return remoteViews;
+//        } else {
+//            return null;
+//        }
+//    }
+
     @Override
     public RemoteViews getViewAt(int position) {
-        // TODO: can display the recipe name on the GRID view
+        // display the recipe's ingredient list on the ListView
         Recipe selectedRecipe;
         if (mRecipes!=null && mRecipes.size() > 0) {
 
-            selectedRecipe =  mRecipes.get(position);
-            // Create the view layout for the GridView
-            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_recipe_layout);
-            remoteViews .setTextViewText(R.id.widget_recipe_text, selectedRecipe.getName());
-            if(!selectedRecipe.getImage().isEmpty()) {
-                //Uri imageUri = Uri.parse(selectedRecipe.getImage());
-                //views.setImageViewUri(R.id.widget_recipe_image, imageUri);
-            } else {
+            selectedRecipe = mRecipes.get(position);
+            // Create the view layout for the ListView
+            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredientlistrow);
 
-                // TODO: we can add a place holder bitmap image
+            // set recipe image
+            if (!selectedRecipe.getImage().isEmpty()) {
+                Uri imageUri = Uri.parse(selectedRecipe.getImage());
+                remoteViews.setImageViewUri(R.id.listview_recipe_image, imageUri);
             }
 
-//            Bundle extras = new Bundle();
-//            extras.putLong(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
-//            Intent fillInIntent = new Intent();
-//            fillInIntent.putExtras(extras);
-//            views.setOnClickFillInIntent(R.id.widget_plant_image, fillInIntent);
-//
-//            return views;
+            // Heading - set the name of the recipe
+            remoteViews.setTextViewText(R.id.recipe_heading, selectedRecipe.getName());
 
-            Intent fillInIntent = new Intent();
-            fillInIntent.putExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY, selectedRecipe);
-            remoteViews.setOnClickFillInIntent(R.id.widget_recipe_root, fillInIntent);
+            // Content - set the ingredient list
+            selectedRecipe.getIngredientList();
+            List<Ingredient> ingredients = selectedRecipe.getIngredientList();
+            StringBuffer ingredientStrBuffer = new StringBuffer();
+
+            for (Ingredient ingredient : ingredients) {
+                String ingredientStr = ingredient.toString() + "\n";
+                ingredientStrBuffer.append(ingredientStr);
+            }
+            remoteViews.setTextViewText(R.id.ingredient_content, ingredientStrBuffer.toString());
             return remoteViews;
         } else {
             return null;

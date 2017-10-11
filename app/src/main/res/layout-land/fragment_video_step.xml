@@ -11,6 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+        <!-- if there is recipe image, we display it -->
+        <ImageView
+            android:id="@+id/recipe_thumbNailImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:contentDescription="recipe"/>
+
         <TextView
             android:id="@+id/text_no_video"
             android:layout_width="match_parent"

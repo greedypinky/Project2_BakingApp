@@ -21,9 +21,8 @@
         </activity>
         <activity android:name=".RecipeStepsActivity" />
         <activity android:name=".RecipeDetailActivity" />
-        <activity android:name=".StepVideoActivity" />
 
-        <!-- boardcast receiver -->
+        <!-- broadcast receiver -->
         <receiver android:name=".utilities.BakingAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

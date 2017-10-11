@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -31,12 +33,16 @@ import com.project2.bakingapplication.utilities.Ingredient;
 import com.project2.bakingapplication.utilities.PlayVideoUtils;
 import com.project2.bakingapplication.utilities.Recipe;
 import com.project2.bakingapplication.utilities.Step;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class RecipeStepsActivity extends AppCompatActivity implements RecipeStepsFragment.OnFragmentClickListener {
 
     private static String TAG = RecipeStepsActivity.class.getSimpleName();
+    private static String VIDEO_POSITION_KEY = "video_position";
+    private static String CURRENT_STEP_KEY = "current_step";
+    private static String CURRENT_WINDOW_POSITION_KEY = "current_window_position";
     private RecyclerView mIngredientRecycler;
     private RecyclerView mRecipeStepsDescRecycler;
     private Recipe mRecipe;
@@ -51,30 +57,44 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     private SimpleExoPlayerView mStepVideoView;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
-
+    private ImageView mRecipeImageView;
+    private long mVideoPosition = -1;
+    private int mCurrentwindowIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onDestroy");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
+        mRecipeImageView = (ImageView) findViewById(R.id.recipe_image);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
+        // Restore the SavedInstanceState
         if(savedInstanceState!= null) {
             if(savedInstanceState.containsKey(RECIPE_KEY)) {
-
                 mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
             }
 
+            if(savedInstanceState.containsKey(VIDEO_POSITION_KEY)) {
+                mVideoPosition = savedInstanceState.getLong(VIDEO_POSITION_KEY);
+            }
+
+            if(savedInstanceState.containsKey(CURRENT_WINDOW_POSITION_KEY)) {
+                mCurrentwindowIndex = savedInstanceState.getInt(CURRENT_WINDOW_POSITION_KEY);
+            }
         } else {
             // get the recipe object passed by Intent's Extra
             Intent intent = getIntent();
-            // recipe selected from the card view activity
-            if (intent.hasExtra(RecipeStepsActivity.RECIPE_KEY)) {
-                mRecipe = intent.getParcelableExtra(RecipeStepsActivity.RECIPE_KEY);
-            }
-            // recipe selected from the widget's grid view
-            if (intent.hasExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY)) {
-                mRecipe = intent.getParcelableExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY);
+            // check if intent is null to avoid exception
+            if (intent != null && intent.getExtras() != null) {
+                // recipe selected from the card view activity
+                if (intent.hasExtra(RecipeStepsActivity.RECIPE_KEY)) {
+                    mRecipe = intent.getParcelableExtra(RecipeStepsActivity.RECIPE_KEY);
+                }
+                // recipe selected from the widget's grid view
+                if (intent.hasExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY)) {
+                    mRecipe = intent.getParcelableExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY);
+                }
             }
         }
 
@@ -107,7 +127,27 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
                 setStepData(mRecipe.getStepList().get(0));
             }
         }
+
+        // Add back image from Json data
+        setRecipeImage(); // Set Recipe image
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     *
+     */
+    public void setRecipeImage() {
+
+        // TODO: add back the handle to display thumbnail image
+        String imageUrl =  mRecipe.getImage();
+        if (imageUrl !=null && !imageUrl.isEmpty()) {
+            Uri imageUri = Uri.parse(imageUrl );
+            Picasso.with(getApplicationContext()).load(imageUri).into(mRecipeImageView);
+            mRecipeImageView.setVisibility(View.VISIBLE);
+        } else {
+
+            mRecipeImageView.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Dummy Test Data
@@ -218,14 +258,25 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             // Prepare the MediaSource the very first time after ExoPlayer is initialized
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
+
+            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+            if (haveResumePosition) {
+                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+            }
+            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+            // mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
 
         } else {
             // Prepare the MediaSource after Exoplayer is already initialized
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
+            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+            if (haveResumePosition) {
+                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+            }
+            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+            // mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
 
         }
@@ -235,11 +286,51 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(RECIPE_KEY, mRecipe);
+        outState.putLong(VIDEO_POSITION_KEY, mVideoPosition);
+        outState.putInt(CURRENT_WINDOW_POSITION_KEY, mCurrentwindowIndex);
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         PlayVideoUtils.releasePlayer(mExoPlayer);
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop");
+        super.onStop();
+        PlayVideoUtils.releasePlayer(mExoPlayer);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mExoPlayer != null){
+            // save the state of the video and release the resources
+            Log.d(TAG, "onPause - save the video position and window index");
+            mVideoPosition = mExoPlayer.getCurrentPosition();
+            mCurrentwindowIndex = mExoPlayer.getCurrentWindowIndex();
+            PlayVideoUtils.releasePlayer(mExoPlayer);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume - initialize the player");
+        if(mCurrentStep!=null) {
+            String videoURL = mCurrentStep.getVideoURL();
+            initializePlayer(Uri.parse(videoURL));
+        }
+
+
     }
 }
