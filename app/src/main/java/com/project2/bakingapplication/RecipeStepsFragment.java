@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project2.bakingapplication.utilities.Recipe;
 import com.project2.bakingapplication.utilities.Step;
+import com.squareup.picasso.Picasso;
 
 /**
  * RecipeStepsFragment
@@ -30,6 +32,8 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
     private StepDescriptionAdapter.OnClickStepHandler mOnClickStepHandler = null;
     private TextView mNoIngredientData;
     private TextView mNoStepData;
+    private ImageView mRecipeImageView;
+
 
     private OnFragmentClickListener mOnFragmentClickListener;
 
@@ -55,8 +59,10 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
         Log.d(TAG, "onCreateView");
         // inflate the fragment
         View fragmentRootView = inflater.inflate(R.layout.fragment_recipe_steps,container,false);
+        mRecipeImageView = (ImageView) fragmentRootView.findViewById(R.id.recipe_image);
         mNoIngredientData = (TextView) fragmentRootView.findViewById(R.id.ingredient_no_data);
         mNoStepData = (TextView) fragmentRootView.findViewById(R.id.steps_no_data);
+
         mRecipeTitle = (TextView) fragmentRootView.findViewById(R.id.recipe_title);
         mIngredientRecyclerView = (RecyclerView) fragmentRootView.findViewById(R.id.recipe_ingredient_recycler_view);
         mStepsRecyclerView = (RecyclerView) fragmentRootView.findViewById(R.id.recipe_steps_recycler_view);
@@ -93,6 +99,9 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
         return fragmentRootView;
     }
 
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -127,5 +136,22 @@ public class RecipeStepsFragment extends Fragment implements StepDescriptionAdap
         // set the title
         mRecipeTitle.setText(mRecipe.getName());
 
+        // set the image if JSON data has the image URL
+        setRecipeImage();
+
+    }
+
+    /**
+     * setRecipeImage - if recipe's image url is not empty
+     */
+    public void setRecipeImage() {
+
+        // add back the handle to display thumbnail image
+        String imageUrl =  mRecipe.getImage();
+        if (imageUrl !=null && !imageUrl.isEmpty()) {
+            Uri imageUri = Uri.parse(imageUrl );
+            Picasso.with(getContext()).load(imageUri).into(mRecipeImageView);
+            mRecipeImageView.setVisibility(View.VISIBLE);
+        }
     }
 }

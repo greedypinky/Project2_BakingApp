@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -64,21 +65,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             }
         }
 
-
-            // TODO: need to set the video play into the full mode screen
-            //this.requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove title bar
-            //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            //        WindowManager.LayoutParams.FLAG_FULLSCREEN); //Remove notification bar
-//           getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
-//           getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                   WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-//        View detail_land = (View) mVideoStepFragment.getView().findViewById(R.id.fragment_recipe_detail_land);
-//        if (detail_land != null) {
-//            this.requestWindowFeature(Window.FEATURE_NO_TITLE); //Remove title bar
-//            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                   WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }
+        // This is for the phone landscape
+        View buttonBars = (View) findViewById(R.id.buttons_bar);
+        if (buttonBars == null) {
+            ActionBar bar = getSupportActionBar();
+            bar.hide(); // hide the AppBar
+        } else {
+            // we are in the portrait mode
+        }
 
         Log.d(TAG,"onCreate() - set step data to fragment");
         mVideoStepFragment.setStepData(mCurrentStep);

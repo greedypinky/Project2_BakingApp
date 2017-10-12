@@ -15,16 +15,19 @@
         <!-- if there is recipe image, we display it -->
         <ImageView
             android:id="@+id/recipe_thumbNailImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:contentDescription="recipe"/>
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:visibility="visible"
+            android:contentDescription="recipe"
+            android:src="@drawable/recipe"
+            android:padding="8dp"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/text_no_video"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:text="@string/no_video"
             android:paddingTop="40dp"
             android:paddingLeft="20dp"

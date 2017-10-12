@@ -86,36 +86,32 @@ class RecipeRemoteViewFactory2 implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public RemoteViews getViewAt(int position) {
-        // display the recipe's ingredient list on the ListView
         Recipe selectedRecipe;
         if (mRecipes!=null && mRecipes.size() > 0) {
 
             selectedRecipe = mRecipes.get(position);
             // Create the view layout for the ListView
-           // RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredientlistrow);
-            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_recipe_layout);
+            RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredientlistrow);
+
             // set recipe image
-//            if (!selectedRecipe.getImage().isEmpty()) {
-//                Uri imageUri = Uri.parse(selectedRecipe.getImage());
-//                remoteViews.setImageViewUri(R.id.listview_recipe_image, imageUri);
-//            }
+            if (!selectedRecipe.getImage().isEmpty()) {
+                Uri imageUri = Uri.parse(selectedRecipe.getImage());
+                remoteViews.setImageViewUri(R.id.listview_recipe_image, imageUri);
+            }
 
             // Heading - set the name of the recipe
             remoteViews.setTextViewText(R.id.recipe_heading, selectedRecipe.getName());
 
             // Content - set the ingredient list
-//            selectedRecipe.getIngredientList();
-//            List<Ingredient> ingredients = selectedRecipe.getIngredientList();
-//            StringBuffer ingredientStrBuffer = new StringBuffer();
-//
-//            for (Ingredient ingredient : ingredients) {
-//                String ingredientStr = ingredient.toString() + "\n";
-//                ingredientStrBuffer.append(ingredientStr);
-//            }
-//
-//            remoteViews.setTextViewText(R.id.ingredient_content, ingredientStrBuffer.toString());
+            selectedRecipe.getIngredientList();
+            List<Ingredient> ingredients = selectedRecipe.getIngredientList();
+            StringBuffer ingredientStrBuffer = new StringBuffer();
 
-
+            for (Ingredient ingredient : ingredients) {
+                String ingredientStr = ingredient.toString() + "\n";
+                ingredientStrBuffer.append(ingredientStr);
+            }
+            remoteViews.setTextViewText(R.id.ingredient_content, ingredientStrBuffer.toString());
             return remoteViews;
         } else {
             return null;

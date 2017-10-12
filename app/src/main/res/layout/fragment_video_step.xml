@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingBottom="8dp">
+    android:paddingRight="8dp">
 
     <LinearLayout
         android:id="@+id/fragment_recipe_detail"
@@ -20,10 +19,13 @@
         <!-- if there is recipe image, we display it -->
         <ImageView
             android:id="@+id/recipe_thumbNailImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:contentDescription="recipe"/>
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:contentDescription="recipe"
+            android:src="@drawable/recipe"
+            android:padding="8dp"/>
 
         <TextView
             android:id="@+id/text_no_video"
@@ -31,7 +33,7 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:text="@string/no_video"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_marginTop="40dp"
             android:gravity="center"/>
 

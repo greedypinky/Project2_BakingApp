@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".RecipeStepsActivity">
 
-    <ImageView
-        android:id="@+id/recipe_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <!-- need to specify the fragment class -->
     <fragment
@@ -17,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.project2.bakingapplication.RecipeStepsFragment">
-
-
     </fragment>
 
 

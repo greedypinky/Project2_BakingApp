@@ -56,7 +56,6 @@ public class StepDetailFragment extends Fragment {
     private static String CURRENT_STEP_KEY = "current_step";
     private static String CURRENT_WINDOW_POSITION_KEY = "current_window_position";
     private OnClickButtonHandler onClickButtonHandler;
-    private ImageView mThumbNailImage;
     private TextView mTextNoVideo;
     private TextView mStepInstructions;
     private Uri mVideoURI;
@@ -66,6 +65,7 @@ public class StepDetailFragment extends Fragment {
     private Button mNextButton;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
+    private ImageView mThumbNailImage;
     private boolean isVideoPlaying;
     private long mVideoPosition = -1;
     private int mCurrentwindowIndex = -1;
@@ -93,18 +93,18 @@ public class StepDetailFragment extends Fragment {
         resetPosition();
 
         View fragmentRootView = inflater.inflate(R.layout.fragment_video_step,container,false);
-        mTextNoVideo = (TextView) fragmentRootView.findViewById(R.id.text_no_video);
-        // Initialize the exoplayer view.
-        mStepVideoView = (SimpleExoPlayerView) fragmentRootView.findViewById(R.id.recipe_step_video);
-        mStepInstructions = (TextView) fragmentRootView.findViewById(R.id.recipe_step_instructions);
+
+        // add back the ThumbNail image View
         mThumbNailImage = (ImageView) fragmentRootView.findViewById(R.id.recipe_thumbNailImage);
         if ( mThumbNailImage == null ) {
             Log.d(TAG, "onCreate() -> mThumbNailImage is NULL !!! why ? !!");
         }
 
-        if ( mTextNoVideo == null ) {
-            Log.d(TAG, "onCreate() -> mThumbNailImage is NULL !!! why ? !!");
-        }
+        mTextNoVideo = (TextView) fragmentRootView.findViewById(R.id.text_no_video);
+        // Initialize the exoplayer view.
+        mStepVideoView = (SimpleExoPlayerView) fragmentRootView.findViewById(R.id.recipe_step_video);
+        mStepInstructions = (TextView) fragmentRootView.findViewById(R.id.recipe_step_instructions);
+
         // initialize the buttons but in Tablet device, we do not have the buttons
 
         View detail_land = (View)fragmentRootView.findViewById(R.id.fragment_recipe_detail_land);
@@ -161,6 +161,27 @@ public class StepDetailFragment extends Fragment {
         return fragmentRootView;
     }
 
+
+    /**
+     * setImage
+     * @param step
+     */
+    public void setImage(Step step) {
+
+        // TODO: add back the handle to display thumbnail image
+        String thumbNailURLUrl= step.getThumbNailURL();
+        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty()) {
+            Uri imageUri = Uri.parse(thumbNailURLUrl);
+            Picasso.with(getContext()).load(imageUri).into(mThumbNailImage);
+            mThumbNailImage.setVisibility(View.VISIBLE);
+        } else {
+            if ( mThumbNailImage == null ) {
+                Log.d(TAG, "mThumbNailImage is NULL !!! why ? !!");
+            }
+            // mThumbNailImage.setVisibility(View.INVISIBLE);
+        }
+    }
+
     /**
      * setStepData
      * @param step
@@ -190,30 +211,12 @@ public class StepDetailFragment extends Fragment {
             mStepVideoView.setVisibility(View.INVISIBLE);
         }
 
-        // add back to deal with Thumbnail URL
-        Log.d(TAG, "Set Step's Thumbnail URL");
+        // Set step's thumbnail image
         setImage(step);
+
     }
 
-    /**
-     * setImage
-     * @param step
-     */
-    public void setImage(Step step) {
 
-        // TODO: add back the handle to display thumbnail image
-        String thumbNailURLUrl= step.getThumbNailURL();
-        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty()) {
-            Uri imageUri = Uri.parse(thumbNailURLUrl);
-            Picasso.with(getContext()).load(imageUri).into(mThumbNailImage);
-            mThumbNailImage.setVisibility(View.VISIBLE);
-        } else {
-            if ( mThumbNailImage == null ) {
-                Log.d(TAG, "mThumbNailImage is NULL !!! why ? !!");
-            }
-            // mThumbNailImage.setVisibility(View.INVISIBLE);
-        }
-    }
 
 
     public void disablePreviousButton(boolean disable){

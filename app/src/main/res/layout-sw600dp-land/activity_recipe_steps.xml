@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".RecipeStepsActivity">
 
+    <!-- left pane layout -->
     <!-- need to specify the fragment class -->
     <fragment
         android:id="@+id/fragment_recipe_steps"
@@ -21,6 +22,8 @@
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
+
+    <!-- right pane layout -->
 
     <ScrollView
         android:layout_width="match_parent"

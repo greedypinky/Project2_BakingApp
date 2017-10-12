@@ -7,6 +7,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+    <!-- show recipe image if there is one -->
+    <ImageView
+        android:id="@+id/recipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:src="@drawable/recipe"/>
+
         <TextView
             android:id="@+id/recipe_title"
             android:layout_width="match_parent"

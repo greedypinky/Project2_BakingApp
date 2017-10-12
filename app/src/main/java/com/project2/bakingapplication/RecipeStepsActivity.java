@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,7 +58,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     private SimpleExoPlayerView mStepVideoView;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
-    private ImageView mRecipeImageView;
+    // private ImageView mRecipeImageView;
     private long mVideoPosition = -1;
     private int mCurrentwindowIndex = -1;
 
@@ -66,7 +67,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
         Log.d(TAG, "onDestroy");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
-        mRecipeImageView = (ImageView) findViewById(R.id.recipe_image);
+       // mRecipeImageView = (ImageView) findViewById(R.id.recipe_image);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Restore the SavedInstanceState
@@ -112,6 +113,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
 
             // Initialize the fragment
             mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
+            // Hide the AppBar to show in full window mode
+            ActionBar bar = getSupportActionBar();
+            bar.hide(); // hide the AppBar
 
         } else {
             // one-pane view: without detail view on the right
@@ -128,27 +132,10 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             }
         }
 
-        // Add back image from Json data
-        setRecipeImage(); // Set Recipe image
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    /**
-     *
-     */
-    public void setRecipeImage() {
 
-        // TODO: add back the handle to display thumbnail image
-        String imageUrl =  mRecipe.getImage();
-        if (imageUrl !=null && !imageUrl.isEmpty()) {
-            Uri imageUri = Uri.parse(imageUrl );
-            Picasso.with(getApplicationContext()).load(imageUri).into(mRecipeImageView);
-            mRecipeImageView.setVisibility(View.VISIBLE);
-        } else {
-
-            mRecipeImageView.setVisibility(View.INVISIBLE);
-        }
-    }
 
     // Dummy Test Data
 //    private Recipe getDummyRecipe() {
@@ -259,6 +246,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
 
+            // add back the code to set the previous state of the player if previous state exists
             boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
             if (haveResumePosition) {
                 mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);

@@ -12,12 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.project2.bakingapplication.RecipeStepsFragment">
-
-
     </fragment>
-
-    <!-- TODO: Create one more xml file that includes the right pane -->
-
-
 
 </LinearLayout>
