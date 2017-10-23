@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview_recipe_steps"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_recipe_steps"
+        android:id="@+id/linearview_recipe_steps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -42,7 +48,8 @@
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
         <TextView
             android:id="@+id/ingredient_no_data"
@@ -51,7 +58,8 @@
             android:textSize="22dp"
             android:layout_gravity="center"
             android:text="@string/no_ingredient_data"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            />
 
         <!-- Divider -->
         <View
@@ -68,7 +76,8 @@
             android:textAlignment="center"
             android:text="@string/steps_label"
             android:padding="4dp"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent"
+            />
 
         <!-- Recipe Steps Recycler view-->
         <android.support.v7.widget.RecyclerView
@@ -76,7 +85,8 @@
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
+            android:layout_below="@+id/textview_steps"
          />
 
         <TextView
@@ -86,6 +96,9 @@
             android:textSize="22dp"
             android:layout_gravity="center"
             android:text="@string/no_step_data"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            />
 
     </LinearLayout>
+
+</ScrollView>

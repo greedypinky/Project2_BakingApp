@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:baselineAligned="false"
     android:orientation="horizontal"
@@ -24,7 +24,6 @@
         android:background="@android:color/darker_gray" />
 
     <!-- right pane layout -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,6 +38,16 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
 
+            <!-- if there is recipe image, we display it -->
+            <ImageView
+                android:id="@+id/recipe_thumbNailImage"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:contentDescription="recipe"
+                android:src="@drawable/recipe"
+                android:padding="8dp"/>
 
             <TextView
                 android:id="@+id/text_no_video"
@@ -69,4 +78,4 @@
     </ScrollView>
 
 
-</LinearLayout>
+</FrameLayout>

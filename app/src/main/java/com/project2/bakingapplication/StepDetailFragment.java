@@ -88,10 +88,6 @@ public class StepDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         Log.d(TAG,"Fragment - onCreateView");
-
-        // reset position for exoPlayer's window index and position
-        resetPosition();
-
         View fragmentRootView = inflater.inflate(R.layout.fragment_video_step,container,false);
 
         // add back the ThumbNail image View
@@ -113,13 +109,20 @@ public class StepDetailFragment extends Fragment {
         if (savedInstanceState!=null) {
            if (savedInstanceState.containsKey(CURRENT_STEP_KEY)) {
                mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
+               Log.d(TAG,"CURRENT_STEP_KEY exist:" +  mCurrentStep.getStepId());
+               setStepData(mCurrentStep);
            }
-           if(savedInstanceState.containsKey(VIDEO_POSITION_KEY)) {
+           if (savedInstanceState.containsKey(VIDEO_POSITION_KEY)) {
                mVideoPosition = savedInstanceState.getLong(VIDEO_POSITION_KEY);
            }
-           if(savedInstanceState.containsKey(CURRENT_WINDOW_POSITION_KEY)) {
+           if (savedInstanceState.containsKey(CURRENT_WINDOW_POSITION_KEY)) {
                mCurrentwindowIndex = savedInstanceState.getInt(CURRENT_WINDOW_POSITION_KEY);
            }
+        } else {
+
+            // reset position for exoPlayer's window index and position
+            resetPosition();
+
         }
 
         // In portrait mode - initialize the Previous and Next buttons
@@ -176,7 +179,7 @@ public class StepDetailFragment extends Fragment {
             mThumbNailImage.setVisibility(View.VISIBLE);
         } else {
             if ( mThumbNailImage == null ) {
-                Log.d(TAG, "mThumbNailImage is NULL !!! why ? !!");
+                Log.e(TAG, "mThumbNailImage is NULL !!! why ? !!");
             }
             // mThumbNailImage.setVisibility(View.INVISIBLE);
         }
@@ -186,8 +189,10 @@ public class StepDetailFragment extends Fragment {
      * setStepData
      * @param step
      */
-    public void setStepData(Step step){
+    public void setStepData(Step step) {
         mCurrentStep = step;
+        Log.d(TAG, "Set Current Step ID:" + step.getStepId());
+        Log.d(TAG, "Set Current Step Description:" + step.getDescription());
        // mCurrentStepIndex = step.getStepId();
         mStepInstructions.setText(step.getDescription());
         String videoURL = step.getVideoURL();

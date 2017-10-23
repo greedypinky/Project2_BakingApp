@@ -14,8 +14,9 @@
     <string name="error_no_recipe">No Recipe Data!</string>
     <string name="parcelable_recipe">RECIPE</string>
     <string name="no_video">No video for this step!</string>
-    <string name="no_recipe">No Recipe why ??</string>
+    <string name="no_recipe">No Recipe!</string>
     <string name="no_ingredient_data">Some error happens! No ingredient data!</string>
     <string name="no_step_data">Some error happens! No steps data!</string>
+    <string name="title_activity_widget_configuration">WidgetConfigurationActivity</string>
 
 </resources>

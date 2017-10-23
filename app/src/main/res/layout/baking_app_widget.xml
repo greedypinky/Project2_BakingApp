@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numColumns="auto_fit"
+        android:paddingTop="8dp"
        >
     </GridView>
 
@@ -21,7 +22,8 @@
         android:id="@+id/widget_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
         <TextView
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
@@ -31,14 +33,6 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <!--
-        <ImageView
-            android:alpha="0.2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/xxx"/>
-            -->
 
     </RelativeLayout>
 

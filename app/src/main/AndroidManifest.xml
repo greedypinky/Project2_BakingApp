@@ -36,11 +36,20 @@
         <!-- need to add permission allow system to bind the service to create the view -->
         <service
             android:name=".RecipeWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false">
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
 
-        </service>
+        <!-- Widget Configuration Activity -->
+        <activity
+            android:name=".WidgetConfigurationActivity"
+            android:label="@string/title_activity_widget_configuration"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
 
+
+        </activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:background="@android:color/holo_blue_dark" >
 
+
     <ImageView
         android:id="@+id/listview_recipe_image"
         android:layout_width="40dp"

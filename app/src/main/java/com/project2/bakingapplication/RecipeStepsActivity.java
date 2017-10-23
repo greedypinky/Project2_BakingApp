@@ -54,7 +54,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     private RecipeStepsFragment mRecipeStepsFragment;
     private TextView mTextNoVideo;
     private TextView mStepInstructions;
-    private Uri mVideoURI;
+    private ImageView mThumbNailImage; // thumbNailImage from each Step
+    private Uri mVideoURI; // Video URI from each step
     private SimpleExoPlayerView mStepVideoView;
     private Step mCurrentStep;
     private SimpleExoPlayer mExoPlayer;
@@ -93,9 +94,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
                     mRecipe = intent.getParcelableExtra(RecipeStepsActivity.RECIPE_KEY);
                 }
                 // recipe selected from the widget's grid view
-                if (intent.hasExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY)) {
-                    mRecipe = intent.getParcelableExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY);
-                }
+//                if (intent.hasExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY)) {
+//                    mRecipe = intent.getParcelableExtra(RecipeStepsActivity.WIDGET_RECIPE_KEY);
+//                }
             }
         }
 
@@ -110,6 +111,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             // Initialize the exoplayer view.
             mStepVideoView = (SimpleExoPlayerView) findViewById(R.id.recipe_step_video);
             mStepInstructions = (TextView) findViewById(R.id.recipe_step_instructions);
+            // Init the thumbnail image
+            mThumbNailImage = (ImageView) findViewById(R.id.recipe_thumbNailImage);
 
             // Initialize the fragment
             mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
@@ -134,8 +137,6 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-
 
     // Dummy Test Data
 //    private Recipe getDummyRecipe() {
@@ -179,15 +180,17 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     @Override
     public void onClickFragment(Step step, int pos) {
 
-        if(!mTwoPane) {
+        // portrait mode
+        if (!mTwoPane) {
 
             // start activity if in Portrait view
             Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
             intent.putExtra("STEPS", step);
             intent.putParcelableArrayListExtra("STEP_ARRAY", (ArrayList) mRecipe.getStepList());
             startActivity(intent);
+            // landscape mode
         } else {
-            // update the right pane
+            // update the right pane 's step information
             setStepData(step);
         }
     }
@@ -228,8 +231,30 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             mStepVideoView.setVisibility(View.INVISIBLE);
         }
 
+        // set the thumbnail image if there is one exists
+        setImage(step);
+
     }
 
+    /**
+     * setImage
+     * @param step
+     */
+    public void setImage(Step step) {
+
+        // TODO: add back the handle to display thumbnail image
+        String thumbNailURLUrl= step.getThumbNailURL();
+        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty()) {
+            Uri imageUri = Uri.parse(thumbNailURLUrl);
+            Picasso.with(getApplicationContext()).load(imageUri).into(mThumbNailImage);
+            mThumbNailImage.setVisibility(View.VISIBLE);
+        } else {
+            if ( mThumbNailImage == null ) {
+                Log.e(TAG, "mThumbNailImage is NULL!");
+            }
+           // mThumbNailImage.setVisibility(View.INVISIBLE);
+        }
+    }
 
     /**
      * Initialize ExoPlayer.
@@ -274,15 +299,20 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(RECIPE_KEY, mRecipe);
-        outState.putLong(VIDEO_POSITION_KEY, mVideoPosition);
-        outState.putInt(CURRENT_WINDOW_POSITION_KEY, mCurrentwindowIndex);
+        // when in the landscape mode
+        if(mTwoPane) {
+            outState.putLong(VIDEO_POSITION_KEY, mVideoPosition);
+            outState.putInt(CURRENT_WINDOW_POSITION_KEY, mCurrentwindowIndex);
+        }
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
         super.onDestroy();
-        PlayVideoUtils.releasePlayer(mExoPlayer);
+        if (mExoPlayer!=null) {
+            PlayVideoUtils.releasePlayer(mExoPlayer);
+        }
     }
 
     @Override
@@ -295,7 +325,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onStop() {
         Log.d(TAG, "onStop");
         super.onStop();
-        PlayVideoUtils.releasePlayer(mExoPlayer);
+        if (mExoPlayer!=null) {
+            PlayVideoUtils.releasePlayer(mExoPlayer);
+        }
     }
 
     @Override

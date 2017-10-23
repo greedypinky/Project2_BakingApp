@@ -44,9 +44,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
         // retrieve data from the savedInstanceState after rotation
         if(savedInstanceState!=null) {
             if(savedInstanceState.containsKey(CURRENT_STEP_KEY)) {
-                Log.d(TAG,"savedInstanceState - get the current step object");
-                mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
-                //mVideoStepFragment.setStepData(mCurrentStep);
+
+               // mCurrentStep = savedInstanceState.getParcelable(CURRENT_STEP_KEY);
+               // Log.d(TAG,"savedInstanceState - get the current step id:" + mCurrentStep.getStepId());
+               // mVideoStepFragment.setStepData(mCurrentStep);
             }
 
             if(savedInstanceState.containsKey(ALL_STEPS_KEY)) {
@@ -58,9 +59,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             // retrieve data from the intent
             Intent intent = getIntent();
             // Add this check to avoid exception
-            if(intent != null && intent.getExtras() != null) {
+            if (intent != null && intent.getExtras() != null) {
                 mCurrentStep = (Step) intent.getParcelableExtra("STEPS");
-                //mVideoStepFragment.setStepData(mCurrentStep);
+                mVideoStepFragment.setStepData(mCurrentStep);
+                Log.d(TAG,"From intent-Get the current step id:" + mCurrentStep.getStepId());
                 mSteps = intent.getParcelableArrayListExtra("STEP_ARRAY");
             }
         }
@@ -74,9 +76,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             // we are in the portrait mode
         }
 
-        Log.d(TAG,"onCreate() - set step data to fragment");
-        mVideoStepFragment.setStepData(mCurrentStep);
-        //mVideoStepFragment.setImage(mCurrentStep);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -101,7 +100,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
     protected void onSaveInstanceState(Bundle outState) {
 
         super.onSaveInstanceState(outState);
-        outState.putParcelable(CURRENT_STEP_KEY, mCurrentStep);
+        // outState.putParcelable(CURRENT_STEP_KEY, mCurrentStep);
         outState.putParcelableArrayList(ALL_STEPS_KEY, mSteps);
 
     }

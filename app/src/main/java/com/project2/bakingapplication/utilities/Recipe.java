@@ -16,7 +16,6 @@ public class Recipe implements Parcelable {
     private List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
     private List<Step> mStepList = new ArrayList<Step>();
 
-
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
 
         @Override
