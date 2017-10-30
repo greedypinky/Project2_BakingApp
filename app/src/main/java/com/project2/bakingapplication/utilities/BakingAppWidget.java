@@ -32,6 +32,7 @@ public class BakingAppWidget extends AppWidgetProvider {
     public final static String EXTRA_WIDGET_RECIPE = "widgetRecipeKey";
     //public final static String EXTRA_WIDGET_LABEL = "widgetRecipeKey";
     private static Recipe widgetRecipe;
+    private static final String BUNDEL_KEY ="bundle";
 
 
 
@@ -153,7 +154,7 @@ public class BakingAppWidget extends AppWidgetProvider {
                     .getInstance(UpdateWidgetService.this);
             Log.e(TAG,"OnHandleIntent");
             // Get information from the intent
-            Bundle bundle = intent.getBundleExtra("bundle");
+            Bundle bundle = intent.getBundleExtra(BUNDEL_KEY);
             if(bundle != null ) {
                 int incomingAppWidgetId = bundle.getInt(EXTRA_APPWIDGET_ID,
                         INVALID_APPWIDGET_ID);
@@ -179,6 +180,8 @@ public class BakingAppWidget extends AppWidgetProvider {
                     Log.e(TAG, "OnHandleIntent - INVALID APP WIDGET ID");
                 }
 
+            }  else {
+                Log.e(TAG, "!!!OnHandleIntent - unable to get Extra");
             }
 
         }

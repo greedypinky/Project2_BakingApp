@@ -9,13 +9,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,13 +23,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
-
 import com.project2.bakingapplication.utilities.BakingAppWidget;
 import com.project2.bakingapplication.utilities.BakingAppWidget.UpdateWidgetService;
 import com.project2.bakingapplication.utilities.Ingredient;
 import com.project2.bakingapplication.utilities.NetworkUtils;
 import com.project2.bakingapplication.utilities.Recipe;
 import com.project2.bakingapplication.utilities.RecipeJsonUtils;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,38 +128,33 @@ public class WidgetConfigurationActivity extends AppCompatActivity implements Lo
         Recipe selectedRecipe = mRecipes.get(position);
         Log.d(TAG, "addAppWidgetWithDesiredRecipe for selected recipe :" + selectedRecipe.getName());
 
-        // Call directly to update the widget
-//        BakingAppWidget.updateAppWidget(getApplicationContext(), appWidgetManager,
-//                mAppWidgetId, selectedRecipe);
-//        Intent intent = new Intent();
-//        setResult(RESULT_OK, intent);
-//        finish();
+        // Call BakingAppWidget.udpateAppWidget directly to update the widget
+        BakingAppWidget.updateAppWidget(getApplicationContext(), appWidgetManager,
+                mAppWidgetId, selectedRecipe);
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
 
         // The provider class is BakingAppWidget
         // User Intent Service to update the Widget
 
-        AppWidgetProviderInfo providerInfo = AppWidgetManager.getInstance(
-                getBaseContext()).getAppWidgetInfo(mAppWidgetId);
-
-        // Finally, create the return Intent, set it with the Activity result, and finish the Activity:
-        Intent startService = new Intent(WidgetConfigurationActivity.this,
-                UpdateWidgetService.class);
-       // startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-       // startService.putExtra(BakingAppWidget.EXTRA_WIDGET_RECIPE,selectedRecipe);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BakingAppWidget.EXTRA_WIDGET_RECIPE, selectedRecipe);
-        bundle.putInt(EXTRA_APPWIDGET_ID, mAppWidgetId);
+// Does it require to use the IndentService to update the widget, I tried the following code but not successful.
 
 
-
-        //  10-21 14:22:51.777 1601-1978/system_process
-        // W/ActivityManager: Unable to start service Intent { act=CONFIGURATION ACTIVITY cmp=com.project2.bakingapplication/.utilities.BakingAppWidget$UpdateWidgetService (has extras) } U=0: not found
-
-        startService.putExtra("bundle",bundle);
-        startService.setAction("CONFIGURATION ACTIVITY");
-        setResult(RESULT_OK, startService);
-        startService(startService);
-        finish();
+//        // Finally, create the return Intent, set it with the Activity result, and finish the Activity:
+//        Intent startService = new Intent(WidgetConfigurationActivity.this,
+//                UpdateWidgetService.class);
+//       // startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+//       // startService.putExtra(BakingAppWidget.EXTRA_WIDGET_RECIPE,selectedRecipe);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(BakingAppWidget.EXTRA_WIDGET_RECIPE, selectedRecipe);
+//        bundle.putInt(EXTRA_APPWIDGET_ID, mAppWidgetId);
+//
+//        startService.putExtra("bundle",bundle);
+//        startService.setAction("CONFIGURATION ACTIVITY");
+//        setResult(RESULT_OK, startService);
+//        startService(startService);
+//        finish();
 
 
     }
