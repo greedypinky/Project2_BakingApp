@@ -10,9 +10,10 @@
     <!-- left pane layout -->
     <!-- need to specify the fragment class -->
     <fragment
-        android:id="@+id/fragment_recipe_steps"
+        android:id="@+id/fragment_recipe_steps_land"
         android:layout_width="400dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:name="com.project2.bakingapplication.RecipeStepsFragment">
     </fragment>
 
@@ -24,58 +25,14 @@
         android:background="@android:color/darker_gray" />
 
     <!-- right pane layout -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical">
 
-    <LinearLayout
-        android:id="@+id/tablet_recipe_detail"
-        android:layout_width="700dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp">
-
-            <!-- if there is recipe image, we display it -->
-            <ImageView
-                android:id="@+id/recipe_thumbNailImage"
-                android:layout_width="300dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:visibility="visible"
-                android:contentDescription="recipe"
-                android:src="@drawable/recipe"
-                android:padding="8dp"/>
-
-            <TextView
-                android:id="@+id/text_no_video"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:text="@string/no_video"
-                android:visibility="gone"
-                android:layout_gravity="center_vertical"
-                android:paddingTop="30dp"/>
-
-            <!-- Recipe Video -->
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/recipe_step_video"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                />
-
-            <!-- Step instructions: get from Step's description -->
-            <TextView
-                android:id="@+id/recipe_step_instructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:padding="20dp"/>
-
-    </LinearLayout>
-    </ScrollView>
+    <fragment
+        android:id="@+id/fragment_recipe_detail_land"
+        android:layout_width="300dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:name="com.project2.bakingapplication.StepDetailFragment">
+    </fragment>
 
 
 </FrameLayout>

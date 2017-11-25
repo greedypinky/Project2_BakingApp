@@ -247,12 +247,12 @@ public class StepDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         // set OnClickListener for the Previous and Next button
-        if (context instanceof StepDetailFragment.OnClickButtonHandler) {
-            onClickButtonHandler = (OnClickButtonHandler) context;
+        if (context instanceof RecipeDetailActivity) {
+            if (context instanceof StepDetailFragment.OnClickButtonHandler) {
+                onClickButtonHandler = (OnClickButtonHandler) context;
+            }
         } else {
-
-            throw new RuntimeException(context.toString()
-                   + " must implement OnClickButtonHandler");
+            // we do not need the onClickButtonHandler
         }
     }
 

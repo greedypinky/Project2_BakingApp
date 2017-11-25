@@ -52,6 +52,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     // add the boolean to detect if it is a tablet device
     boolean mTwoPane = false;
     private RecipeStepsFragment mRecipeStepsFragment;
+    private StepDetailFragment mStepDetailFragment;
     private TextView mTextNoVideo;
     private TextView mStepInstructions;
     private ImageView mThumbNailImage; // thumbNailImage from each Step
@@ -68,7 +69,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
         Log.d(TAG, "onDestroy");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
-       // mRecipeImageView = (ImageView) findViewById(R.id.recipe_image);
+        // mRecipeImageView = (ImageView) findViewById(R.id.recipe_image);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Restore the SavedInstanceState
@@ -102,39 +103,60 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
 
         // Determine if you're creating a two-pane or single-pane display
         // Two-pane view : with detail view on the right
-        if (findViewById(R.id.tablet_recipe_detail) != null) {
-            Log.d(TAG,"Tablet detail view is found!");
-            // This recipe detail will only initially exist in the two-pane tablet case
-            mTwoPane = true;
-            // Initialize TextView - place holder when no video
-            mTextNoVideo = (TextView) findViewById(R.id.text_no_video);
-            // Initialize the exoplayer view.
-            mStepVideoView = (SimpleExoPlayerView) findViewById(R.id.recipe_step_video);
-            mStepInstructions = (TextView) findViewById(R.id.recipe_step_instructions);
-            // Init the thumbnail image
-            mThumbNailImage = (ImageView) findViewById(R.id.recipe_thumbNailImage);
+//        if (findViewById(R.id.tablet_recipe_detail) != null) {
+//            Log.d(TAG,"Tablet detail view is found!");
+//            // This recipe detail will only initially exist in the two-pane tablet case
+//            mTwoPane = true;
+//            // Initialize TextView - place holder when no video
+//            mTextNoVideo = (TextView) findViewById(R.id.text_no_video);
+//            // Initialize the exoplayer view.
+//            mStepVideoView = (SimpleExoPlayerView) findViewById(R.id.recipe_step_video);
+//            mStepInstructions = (TextView) findViewById(R.id.recipe_step_instructions);
+//            // Init the thumbnail image
+//            mThumbNailImage = (ImageView) findViewById(R.id.recipe_thumbNailImage);
+//
+//            // Initialize the fragment
+//            mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
+//            // Hide the AppBar to show in full window mode
+//            ActionBar bar = getSupportActionBar();
+//            bar.hide(); // hide the AppBar
+//
+//        } else {
+//            // one-pane view: without detail view on the right
+//            mRecipeStepsFragment = (RecipeStepsFragment) fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
+//        }
 
-            // Initialize the fragment
-            mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
-            // Hide the AppBar to show in full window mode
-            ActionBar bar = getSupportActionBar();
-            bar.hide(); // hide the AppBar
-
-        } else {
+        // TODO: load 2 fragments:- one for master and one for detail
+        if (findViewById(R.id.fragment_recipe_steps) != null) {
             // one-pane view: without detail view on the right
+            Log.d(TAG,"It is a one-pane view");
             mRecipeStepsFragment = (RecipeStepsFragment) fragmentManager.findFragmentById(R.id.fragment_recipe_steps);
+        }
+        else {
+            mTwoPane = true;
+            Log.d(TAG,"It is a two-pane view");
+            // two-pane view: with detail view on the right
+            // Initialize the Master fragment
+            // get the fragment id in activity_receipt_steps2.xml
+            mRecipeStepsFragment  = (RecipeStepsFragment)fragmentManager.findFragmentById(R.id.fragment_recipe_steps_land);
+            // Hide the AppBar to show in full window mode
+            // ActionBar bar = getSupportActionBar();
+            // bar.hide(); // hide the AppBar
+
+            // Initialize the Detail fragment
+            mStepDetailFragment = (StepDetailFragment) fragmentManager.findFragmentById(R.id.fragment_recipe_detail_land);
         }
 
         // Set Recipe data to fragment
         mRecipeStepsFragment.setRecipe(mRecipe);
         // set default step to first step
-        if(mTwoPane) {
+        if (mTwoPane) {
             Log.d(TAG,"Tablet detail view is found!");
-            if(mRecipe.getStepList()!= null && (mRecipe.getStepList().size() > 0)) {
-                setStepData(mRecipe.getStepList().get(0));
+            if (mRecipe.getStepList()!= null && (mRecipe.getStepList().size() > 0)) {
+                //setStepData(mRecipe.getStepList().get(0));
+                mStepDetailFragment.setStepData(mRecipe.getStepList().get(0));
             }
         }
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

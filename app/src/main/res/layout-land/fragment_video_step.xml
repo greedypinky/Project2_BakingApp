@@ -54,7 +54,7 @@
             android:padding="22dp"/>
     </LinearLayout>
 
-
+   <!-- landscape view has no buttons row -->
 
 
 </RelativeLayout>
