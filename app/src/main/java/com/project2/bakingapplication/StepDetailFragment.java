@@ -173,15 +173,23 @@ public class StepDetailFragment extends Fragment {
 
         // TODO: add back the handle to display thumbnail image
         String thumbNailURLUrl= step.getThumbNailURL();
-        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty()) {
+        if (thumbNailURLUrl!=null && !thumbNailURLUrl.isEmpty() && !thumbNailURLUrl.contains(".mp4")) {
             Uri imageUri = Uri.parse(thumbNailURLUrl);
+            Log.d(TAG,"setImage:URL contains thumbNailURL !");
+            Log.d(TAG,"setImage:URL is ?? " + imageUri);
             Picasso.with(getContext()).load(imageUri).into(mThumbNailImage);
             mThumbNailImage.setVisibility(View.VISIBLE);
+
         } else {
             if ( mThumbNailImage == null ) {
                 Log.e(TAG, "mThumbNailImage is NULL !!! why ? !!");
             }
-            // mThumbNailImage.setVisibility(View.INVISIBLE);
+            // Show the default image
+            mThumbNailImage.setVisibility(View.VISIBLE);
+            mThumbNailImage.setImageResource(R.drawable.recipe);
+            // TODO: need to load the default image
+            Log.d(TAG,"setImage: show default image!");
+            // Toast.makeText(getContext(),"set default image!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -213,7 +221,9 @@ public class StepDetailFragment extends Fragment {
 
         } else {
             // No video data
-            mExoPlayer.stop();
+            if (mExoPlayer != null) {
+                mExoPlayer.stop();
+            }
             // mExoPlayer.release();
             mTextNoVideo.setVisibility(View.VISIBLE);
             mStepVideoView.setVisibility(View.INVISIBLE);
