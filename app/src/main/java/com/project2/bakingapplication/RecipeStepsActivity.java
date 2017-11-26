@@ -213,7 +213,8 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             // landscape mode
         } else {
             // update the right pane 's step information
-            setStepData(step);
+            // setStepData(step);
+            mStepDetailFragment.setStepData(step);
         }
     }
 
@@ -221,42 +222,42 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
      * setStepData
      * @param step
      */
-    public void setStepData(Step step){
-        mCurrentStep = step;
-        // mCurrentStepIndex = step.getStepId();
-        Log.d(TAG, "setStepData");
-        mStepInstructions.setText(step.getDescription());
-        String videoURL = step.getVideoURL();
-        if(videoURL != null && !videoURL.isEmpty()) {
-
-            //String dummyURI = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb3a_3-mix-sugar-salt-together-cheesecake/3-mix-sugar-salt-together-cheesecake.mp4";
-            //mVideoURI =  Uri.parse(dummyURI);
-            mVideoURI =  Uri.parse(videoURL);
-            Log.d(TAG, "Video URI is:" + mVideoURI.toString());
-            // TODO: check how to use Media play to play the movie
-            mTextNoVideo.setVisibility(View.INVISIBLE);
-            mStepVideoView.setVisibility(View.VISIBLE);
-
-            // Initialize the player.
-            // initializePlayer(mVideoURI);
-            if(mExoPlayer == null) {
-               // mExoPlayer = PlayVideoUtils.initializePlayer(mVideoURI,getApplicationContext(),RecipeStepsActivity.class);
-               initializePlayer(mVideoURI);
-            } else {
-                //PlayVideoUtils.setMediaSourceOnly(mVideoURI,getApplicationContext(), RecipeStepsActivity.class, mExoPlayer);
-                initializePlayer(mVideoURI);
-            }
-
-        } else {
-            // No video data
-            mTextNoVideo.setVisibility(View.VISIBLE);
-            mStepVideoView.setVisibility(View.INVISIBLE);
-        }
-
-        // set the thumbnail image if there is one exists
-        setImage(step);
-
-    }
+//    public void setStepData(Step step){
+//        mCurrentStep = step;
+//        // mCurrentStepIndex = step.getStepId();
+//        Log.d(TAG, "setStepData");
+//        mStepInstructions.setText(step.getDescription());
+//        String videoURL = step.getVideoURL();
+//        if(videoURL != null && !videoURL.isEmpty()) {
+//
+//            //String dummyURI = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb3a_3-mix-sugar-salt-together-cheesecake/3-mix-sugar-salt-together-cheesecake.mp4";
+//            //mVideoURI =  Uri.parse(dummyURI);
+//            mVideoURI =  Uri.parse(videoURL);
+//            Log.d(TAG, "Video URI is:" + mVideoURI.toString());
+//            // TODO: check how to use Media play to play the movie
+//            mTextNoVideo.setVisibility(View.INVISIBLE);
+//            mStepVideoView.setVisibility(View.VISIBLE);
+//
+//            // Initialize the player.
+//            // initializePlayer(mVideoURI);
+//            if(mExoPlayer == null) {
+//               // mExoPlayer = PlayVideoUtils.initializePlayer(mVideoURI,getApplicationContext(),RecipeStepsActivity.class);
+//               initializePlayer(mVideoURI);
+//            } else {
+//                //PlayVideoUtils.setMediaSourceOnly(mVideoURI,getApplicationContext(), RecipeStepsActivity.class, mExoPlayer);
+//                initializePlayer(mVideoURI);
+//            }
+//
+//        } else {
+//            // No video data
+//            mTextNoVideo.setVisibility(View.VISIBLE);
+//            mStepVideoView.setVisibility(View.INVISIBLE);
+//        }
+//
+//        // set the thumbnail image if there is one exists
+//        setImage(step);
+//
+//    }
 
     /**
      * setImage
@@ -281,41 +282,41 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     /**
      * Initialize ExoPlayer.
      */
-    private void initializePlayer(Uri uri) {
-        String userAgent = Util.getUserAgent(getApplicationContext(), RecipeStepsActivity.class.getName());
-        if (mExoPlayer == null) {
-
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
-            mStepVideoView.setPlayer(mExoPlayer);
-            // Prepare the MediaSource the very first time after ExoPlayer is initialized
-            MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
-                    getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-
-            // add back the code to set the previous state of the player if previous state exists
-            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
-            if (haveResumePosition) {
-                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
-            }
-            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
-            // mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
-
-        } else {
-            // Prepare the MediaSource after Exoplayer is already initialized
-            MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
-                    getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
-            if (haveResumePosition) {
-                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
-            }
-            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
-            // mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
-
-        }
-    }
+//    private void initializePlayer(Uri uri) {
+//        String userAgent = Util.getUserAgent(getApplicationContext(), RecipeStepsActivity.class.getName());
+//        if (mExoPlayer == null) {
+//
+//            TrackSelector trackSelector = new DefaultTrackSelector();
+//            LoadControl loadControl = new DefaultLoadControl();
+//            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
+//            mStepVideoView.setPlayer(mExoPlayer);
+//            // Prepare the MediaSource the very first time after ExoPlayer is initialized
+//            MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
+//                    getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+//
+//            // add back the code to set the previous state of the player if previous state exists
+//            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+//            if (haveResumePosition) {
+//                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+//            }
+//            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+//            // mExoPlayer.prepare(mediaSource);
+//            mExoPlayer.setPlayWhenReady(true);
+//
+//        } else {
+//            // Prepare the MediaSource after Exoplayer is already initialized
+//            MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
+//                    getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+//            boolean haveResumePosition = mCurrentwindowIndex != C.INDEX_UNSET;
+//            if (haveResumePosition) {
+//                mExoPlayer.seekTo(mCurrentwindowIndex, mVideoPosition);
+//            }
+//            mExoPlayer.prepare(mediaSource, !haveResumePosition, false);
+//            // mExoPlayer.prepare(mediaSource);
+//            mExoPlayer.setPlayWhenReady(true);
+//
+//        }
+//    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -332,9 +333,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
         super.onDestroy();
-        if (mExoPlayer!=null) {
-            PlayVideoUtils.releasePlayer(mExoPlayer);
-        }
+//        if (mExoPlayer!=null) {
+//            PlayVideoUtils.releasePlayer(mExoPlayer);
+//        }
     }
 
     @Override
@@ -347,31 +348,31 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onStop() {
         Log.d(TAG, "onStop");
         super.onStop();
-        if (mExoPlayer!=null) {
-            PlayVideoUtils.releasePlayer(mExoPlayer);
-        }
+//        if (mExoPlayer!=null) {
+//            PlayVideoUtils.releasePlayer(mExoPlayer);
+//        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(mExoPlayer != null){
-            // save the state of the video and release the resources
-            Log.d(TAG, "onPause - save the video position and window index");
-            mVideoPosition = mExoPlayer.getCurrentPosition();
-            mCurrentwindowIndex = mExoPlayer.getCurrentWindowIndex();
-            PlayVideoUtils.releasePlayer(mExoPlayer);
-        }
+//        if(mExoPlayer != null){
+//            // save the state of the video and release the resources
+//            Log.d(TAG, "onPause - save the video position and window index");
+//            mVideoPosition = mExoPlayer.getCurrentPosition();
+//            mCurrentwindowIndex = mExoPlayer.getCurrentWindowIndex();
+//            PlayVideoUtils.releasePlayer(mExoPlayer);
+//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume - initialize the player");
-        if(mCurrentStep!=null) {
-            String videoURL = mCurrentStep.getVideoURL();
-            initializePlayer(Uri.parse(videoURL));
-        }
+//        if(mCurrentStep!=null) {
+//            String videoURL = mCurrentStep.getVideoURL();
+//            initializePlayer(Uri.parse(videoURL));
+//        }
 
 
     }

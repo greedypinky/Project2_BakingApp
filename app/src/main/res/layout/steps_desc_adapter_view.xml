@@ -17,10 +17,12 @@
         android:padding="16dp"
         android:gravity="center"/>
     <!-- List divider -->
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#37474f"
+        android:background="@color/colorDivider"
     />
+
 
 </LinearLayout>

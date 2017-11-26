@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
          >
         <TextView
             android:id="@+id/ingredient_text"
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="16dp"
-            android:gravity="center"/>
+            />
 
         <TextView
             android:id="@+id/measure_text"
@@ -28,14 +29,14 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="16dp"
-            android:gravity="center"/>
+           />
 
     </LinearLayout>
     <!-- List divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#37474f"
+        android:background="@color/colorDivider"
         />
 
 

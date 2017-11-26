@@ -92,31 +92,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity implements Lo
 
         optionSpinner.setOnItemSelectedListener(this);
     }
-    /*
-    Caused by: android.os.BadParcelableException: ClassNotFoundException when unmarshalling: com.project2.bakingapplication.utilities.Recipe
-    at android.os.Parcel.readParcelableCreator(Parcel.java:2535)
-    at android.os.Parcel.readParcelable(Parcel.java:2461)
-    at android.os.Parcel.readValue(Parcel.java:2364)
-    at android.os.Parcel.readArrayMapInternal(Parcel.java:2717)
-    at android.os.BaseBundle.unparcel(BaseBundle.java:269)
-    at android.os.BaseBundle.getInt(BaseBundle.java:867)
-    at android.content.Intent.getIntExtra(Intent.java:6146)
-    at com.android.launcher3.Launcher.handleActivityResult(Launcher.java:743)
-    at com.android.launcher3.Launcher.onActivityResult(Launcher.java:841)
-    at android.app.Activity.dispatchActivityResult(Activity.java:6915)
-    at android.app.ActivityThread.deliverResults(ActivityThread.java:4049)
-    at android.app.ActivityThread.handleSendResult(ActivityThread.java:4096) 
-    at android.app.ActivityThread.-wrap20(ActivityThread.java) 
-    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1516) 
-    at android.os.Handler.dispatchMessage(Handler.java:102) 
-    at android.os.Looper.loop(Looper.java:154) 
-    at android.app.ActivityThread.main(ActivityThread.java:6077) 
-    at java.lang.reflect.Method.invoke(Native Method) 
-    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:865) 
-    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:755) 
-            10-21 12:27:09.328 1601-1790/system_process W/ActivityManager:   Force finishing activity com.android.launcher3/.Launcher
 
-            */
     /**
      *
      */

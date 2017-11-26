@@ -196,6 +196,7 @@ public class StepDetailFragment extends Fragment {
        // mCurrentStepIndex = step.getStepId();
         mStepInstructions.setText(step.getDescription());
         String videoURL = step.getVideoURL();
+
         if(videoURL != null && !videoURL.isEmpty()) {
 
             //String dummyURI = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdb3a_3-mix-sugar-salt-together-cheesecake/3-mix-sugar-salt-together-cheesecake.mp4";
@@ -212,6 +213,8 @@ public class StepDetailFragment extends Fragment {
 
         } else {
             // No video data
+            mExoPlayer.stop();
+            // mExoPlayer.release();
             mTextNoVideo.setVisibility(View.VISIBLE);
             mStepVideoView.setVisibility(View.INVISIBLE);
         }

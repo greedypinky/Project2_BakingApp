@@ -5,4 +5,5 @@
     <color name="colorAccent">#534bae</color>
     <color name="colorRecipeTitle">#000051</color>
     <color name="colorRecipeText">#534bae</color>
+    <color name="colorDivider">#EEEEEE</color>
 </resources>
