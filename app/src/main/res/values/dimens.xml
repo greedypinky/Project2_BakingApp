@@ -7,5 +7,11 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="receipt_title_size">24sp</dimen>
+    <dimen name="padding">4dp</dimen>
+    <dimen name="receipt_image_hight">200dp</dimen>
+    <dimen name="ingredient_title_size">18sp</dimen>
+    <dimen name="step_title_size">18sp</dimen>
+    <dimen name="no_data_text_size">22sp</dimen>
 
 </resources>

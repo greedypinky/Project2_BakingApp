@@ -17,7 +17,7 @@
     <ImageView
         android:id="@+id/recipe_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/receipt_image_hight"
         android:layout_gravity="center"
         android:visibility="visible"
         android:src="@drawable/recipe"/>
@@ -26,20 +26,20 @@
             android:id="@+id/recipe_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:textSize="@dimen/receipt_title_size"
             android:textAlignment="center"
             android:text="Recipe name"
-            android:padding="4dp"
+            android:padding="@dimen/padding"
             android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/textview_recipe_ingredient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="@dimen/ingredient_title_size"
             android:textAlignment="center"
             android:text="@string/ingredients_label"
-            android:padding="4dp"
+            android:padding="@dimen/padding"
             android:textColor="@color/colorAccent"/>
 
         <!-- Recipe ingredients Recycler view -->
@@ -55,7 +55,7 @@
             android:id="@+id/ingredient_no_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
+            android:textSize="@dimen/no_data_text_size"
             android:layout_gravity="center"
             android:text="@string/no_ingredient_data"
             android:visibility="gone"
@@ -72,10 +72,10 @@
             android:id="@+id/textview_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="@dimen/step_title_size"
             android:textAlignment="center"
             android:text="@string/steps_label"
-            android:padding="4dp"
+            android:padding="@dimen/padding"
             android:textColor="@color/colorAccent"
             />
 
@@ -93,7 +93,7 @@
             android:id="@+id/steps_no_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
+            android:textSize="@dimen/no_data_text_size"
             android:layout_gravity="center"
             android:text="@string/no_step_data"
             android:visibility="gone"
